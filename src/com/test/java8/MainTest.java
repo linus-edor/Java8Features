@@ -55,6 +55,14 @@ public class MainTest {
 						"John Doe; Peter Benjamin Parker; Mary Jane Watson-Parker; John Elvis Doe; John Evan Doe; Jane Doe; Peter Brian Parker",
 						"example"));
 	}
+	@Test
+	public void testAddressesJ8() {
+		assertEquals(
+				"doe_john@example.com; parker_peter@example.com; watsonparker_mary@example.com; doe_john2@example.com; doe_john3@example.com; doe_jane@example.com; parker_peter2@example.com",
+				new Main().addressesJ8(
+						"John Doe; Peter Benjamin Parker; Mary Jane Watson-Parker; John Elvis Doe; John Evan Doe; Jane Doe; Peter Brian Parker",
+						"example"));
+	}
 	
 	@Test
 	public void testSquareDigits(){

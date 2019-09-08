@@ -36,17 +36,18 @@ public class Main {
 		return returnedArr;
 	}
 
-	// Codility test reviewed with Java 8 streams
+	//Codility test reviewed - email addresses formatting
 	public String addresses(String S, String C) {
 		String[] addrTokens = S.split("; ");// holds the seperate raw addresses
-		StringBuilder result = new StringBuilder(); // final result string to
-													// return
+		StringBuilder result = new StringBuilder(); // final result string to return
 		Map<String, Integer> addrMap = new HashMap<>();
 		for (String addr : addrTokens) {
 			String[] currentAddrTokens = addr.split(" ");// get the address components
-			String currAddr = currentAddrTokens[currentAddrTokens.length - 1].concat("_")
-					.concat(currentAddrTokens[0]);
-			currAddr = currAddr.replace("-", "");
+			String currAddr = (currentAddrTokens[currentAddrTokens.length - 1]
+					.concat("_")
+					.concat(currentAddrTokens[0]))
+					.replace("-", "");
+			
 			if (addrMap.containsKey(currAddr))
 				addrMap.put(currAddr, addrMap.get(currAddr) + 1);
 			else
@@ -55,6 +56,26 @@ public class Main {
 			result.append("; ").append(currAddr).append("@" + C.concat(".com"));
 		}
 		return result.toString().substring(2).toLowerCase();
+	}
+	
+	
+	//Codility test reviewed with Java 8 features - email addresses formatting
+	public String addressesJ8(String S, String C) {
+		String[] addrTokens = S.split("; ");// holds the various raw addresses
+		Map<String, Integer> addrMap = new HashMap<>();
+		return Arrays.stream(addrTokens)
+		.map(addr -> addr.toLowerCase())
+		.map(addr -> {
+					String[] currentAddrTokens = addr.split(" ");
+					String currAddr = (currentAddrTokens[currentAddrTokens.length - 1].concat("_")
+							.concat(currentAddrTokens[0])).replace("-", "");
+					if (addrMap.containsKey(currAddr))
+						addrMap.put(currAddr, addrMap.get(currAddr) + 1);
+					else
+						addrMap.put(currAddr, 1);
+					return currAddr.concat("" + (addrMap.get(currAddr) != 1 ? addrMap.get(currAddr) : "")).concat("@")
+							.concat(C).concat(".com");
+				}).collect(Collectors.joining("; "));
 	}
 	
 	/**
@@ -68,19 +89,5 @@ public class Main {
                                       .mapToObj(String::valueOf)
                                       .collect(Collectors.joining("")));
 	}
-
-
-	// get previous same address count
-//	public static int getPrevAddCount(String s) {
-//		String numStr = "";
-//		for (int i = s.length() - 1; i > 0; i--) {
-//			if (Character.isDigit(s.charAt(i))) {
-//				numStr = ("" + s.charAt(i)).concat(numStr);
-//			} else {
-//				break;
-//			}
-//		}
-//		return Integer.valueOf(numStr.length() > 0 ? numStr : "0");
-//	}
 
 }
