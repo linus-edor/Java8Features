@@ -1,10 +1,14 @@
 package com.test.java8;
 
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,6 +26,12 @@ public class Main {
 		//flatMap
 		Arrays.stream(streamFlatMap()).forEach((value) -> System.out.println(value));
 		
+		//Reduce
+		System.out.println("Reduced:::: " + streamReduce());
+		
+		//Concatenated 
+		
+		System.out.println("Conncatenated and reduced::: " + streamConcat());
 	}
 	
 	
@@ -72,6 +82,124 @@ public class Main {
 		// });
 
 		return returnedArr;
+	}
+	
+	/**
+	 * Return true if any of the array elements contains the given string (@param str) else false
+	 * */
+	public boolean streamAnyMatch(String str) {
+		return Stream.of(new String[] { "One flew over the cuckoo's nest", "To kill a muckingbird", "Gone with the wind" }).anyMatch(value -> {
+			return value.indexOf(str) != -1;
+		});
+	}
+
+	/**
+	 * Return true if all of the array elements contains the given string (@param str) else false
+	 * */
+	public boolean streamAllMatch(String str) {
+		return Stream.of(new String[] { "One flew over the cuckoo's nest", "To kill a muckingbird", "Gone with the wind" }).allMatch(value -> {
+			return value.indexOf(str) != -1;
+		});
+	}
+	
+	/**
+	 * Return true if none of the array elements contains the given string (@param str) else false
+	 * */
+	public boolean streamNoneMatch(String str) {
+		return Stream.of(new String[] { "One flew over the cuckoo's nest", "To kill a muckingbird", "Gone with the wind" }).noneMatch(value -> {
+			return value.indexOf(str) != -1;
+		});
+	}
+	
+	/**
+	 * Return the size of the resultant stream 
+	 * */
+	public long streamCount() {
+		return Stream
+				.of(new String[] { "One flew over the cuckoo's nest", "To kill a muckingbird", "Gone with the wind" })
+				.flatMap(value -> {
+					return Stream.of(value.split(" "));
+				}).count();
+	}
+	
+	/**
+	 * Find any element from the stream. Uses the Optional class. If @Param present is true, return a value else return null
+	 * */
+	public String streamFindAny(boolean present) {
+		Stream<String> stream = Stream.of(present ? new String[] { "one", "two", "three", "four" } : new String[] {});
+		Optional<String> anyElement = stream.findAny();// using Optional here
+//		return anyElement.orElseGet(null);//return null
+		return anyElement.get();//return none
+	}
+	
+	public String streamMinString() {
+		return Stream.of("one", "two", "three").min((val1, val2) -> {
+			return val1.compareTo(val2);
+		}).get();
+	}
+
+	public int streamMinInt() {
+		Integer min = Stream.of( 4, 56, 7, 89, 10 ).mapToInt(v -> v).min()
+				.orElseThrow(NoSuchElementException::new);
+		return min;
+	}
+	
+	public String streamMaxString() {
+		return Stream.of( "one", "two", "three" ).max((val1, val2) -> {
+			return val1.compareTo(val2);
+		}).get();
+	}
+
+	public int streamMaxInt() {
+		Integer max = Stream.of( 4, 56, 7, 89, 10 ).mapToInt(v -> v).max()
+				.orElseThrow(NoSuchElementException::new);
+		return max;
+	}
+	
+	/**
+	 *Reduce the list to one value 
+	 */
+	public static String streamReduce(){
+		List<String> stringList = new ArrayList<String>();
+		stringList.add("One flew over the cuckoo's nest");
+		stringList.add("To kill a muckingbird");
+		stringList.add("Gone with the wind");
+		Stream<String> stream = stringList.stream();
+		Optional<String> reduced = stream.reduce((value, combinedValue) -> {
+			return combinedValue + " + " + value;
+		});
+		return reduced.orElseThrow(NoSuchElementException::new);
+	}
+	
+	/**
+	 * Concatenate two streams and reduce the elements to one string
+	 **/
+	public static String streamConcat() {
+		List<String> stringList = new ArrayList<String>();
+		stringList.add("One flew over the cuckoo's nest");
+		stringList.add("To kill a muckingbird");
+		stringList.add("Gone with the wind");
+		Stream<String> stream1 = stringList.stream();
+		List<String> stringList2 = new ArrayList<>();
+		stringList2.add("Lord of the Rings");
+		stringList2.add("Planet of the Rats");
+		stringList2.add("Phantom Menace");
+		Stream<String> stream2 = stringList2.stream();
+		Stream<String> concatStream = Stream.concat(stream1, stream2);
+		Optional<String> reduced = concatStream.reduce((value, combinedVal) -> {
+			return value + " + " + combinedVal;
+		});
+		return reduced.orElse(null);
+	}
+
+	/**
+	 * Find first element from the stream. Uses the Optional class. If @Param present is true, return a value else return none / null
+	 * */
+	public String streamFindFirst(boolean present) {
+		Stream<String> stream = Stream.of(present ? new String[] { "one", "two", "three", "four" } : new String[] {});
+		Optional<String> anyElement = stream.findFirst();// using Optional here
+		return anyElement.orElseGet(null);//return null
+//		return anyElement.get();//return none
 	}
 
 	//Codility test reviewed - email addresses formatting

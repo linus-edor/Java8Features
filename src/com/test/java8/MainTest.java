@@ -5,6 +5,8 @@ package com.test.java8;
 
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -64,6 +66,96 @@ public class MainTest {
 	@Test
 	public final void testStreamMap() {
 		assertArrayEquals(new Integer[] { 1, 9, 25, 9, 16 }, main.streamMap());
+	}
+
+	@Test
+	public final void testStreamAnyMatch() {
+		assertTrue(main.streamAnyMatch("One"));
+		assertTrue(main.streamAnyMatch("kill"));
+		assertTrue(main.streamAnyMatch("a"));
+		assertFalse(main.streamAnyMatch("Than"));
+		assertTrue(main.streamAnyMatch("To kill a muckingbird"));
+	}
+
+	@Test
+	public final void testStreamAllMatch() {
+		assertFalse(main.streamAllMatch("One"));
+		assertFalse(main.streamAllMatch("kill"));
+		assertFalse(main.streamAllMatch("a"));
+	}
+
+	@Test
+	public final void testStreamNoneMatch() {
+		assertFalse(main.streamNoneMatch("One"));
+		assertFalse(main.streamNoneMatch("kill"));
+		assertFalse(main.streamNoneMatch("a"));
+		assertTrue(main.streamNoneMatch("More"));
+	}
+
+	@Test
+	public final void testStreamCount() {
+		assertEquals(14, main.streamCount());
+	}
+
+	@Test
+	public final void testStreamFindAny() {
+		assertNotNull(main.streamFindAny(true));
+	}
+
+	// @Test(expected=NullPointerException.class)
+	@Test(expected = NoSuchElementException.class)
+	public final void testStreamFindAnyWithNSE() {
+		main.streamFindAny(false);
+	}
+
+	@Test
+	public final void testStreamFindFirst() {
+		assertNotNull(main.streamFindFirst(true));
+	}
+
+	@Test(expected = NullPointerException.class)
+	// @Test(expected = NoSuchElementException.class)
+	public final void testStreamFindFirstWithNSE() {
+		main.streamFindFirst(false);
+	}
+
+	@Test
+	public final void testStreamMin() {
+		// String
+		assertEquals("one", main.streamMinString());
+		assertNotEquals("three", main.streamMinString());
+
+		// Integer
+		assertEquals(4, main.streamMinInt());
+	}
+
+	@Test
+	public final void testStreamMax() {
+		// String
+		assertEquals("two", main.streamMaxString());
+		assertNotEquals("one", main.streamMaxString());
+
+		// Integer
+		assertEquals(89, main.streamMaxInt());
+	}
+
+	@Test
+	public final void testStreamReduce() {
+		assertEquals("Gone with the wind + To kill a muckingbird + One flew over the cuckoo's nest",
+				main.streamReduce());
+	}
+
+	@Test(timeout=5)
+	public final void testStreamConcat() {
+		assertEquals(
+				"One flew over the cuckoo's nest + To kill a muckingbird + Gone with the wind + Lord of the Rings + Planet of the Rats + Phantom Menace",
+				main.streamConcat());
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Test
