@@ -18,7 +18,45 @@ public class Main {
 		stream.peek((value) -> {
 			System.out.println("value:::" + value);
 		});
+		
+		//flatMap
+		Arrays.stream(streamFlatMap()).forEach((value) -> System.out.println(value));
+		
 	}
+	
+	
+	/**
+	 * Returns a flattened array of the separates words from each list item.
+	 * */
+	public static Object[] streamFlatMap() {
+		List<String> stringList1 = new ArrayList<String>();
+		stringList1.add("One flew over the cuckoo's nest");
+		stringList1.add("To kill a muckingbird");
+		stringList1.add("Gone with the wind");
+
+		return stringList1.stream().flatMap((value) -> {
+			String[] split = value.split(" ");
+			return (Stream<String>) Arrays.asList(split).stream();
+		}).toArray();
+	}
+
+	/**
+	 * Return an array of values greater than 3 i.e. { 5, 4, 6, 8, 6, 10 }
+	 * */
+	public Object[] streamFilter() {
+		return Arrays.asList(new Integer[] { 1, 3, 5, 3, 4, 6, 8, 6, 10, 0, 2, 3, 1 }).stream().filter(value -> {
+			return (Integer) value >= 4;
+		}).toArray();
+	}
+	
+	/**
+	 * Return a new array with each element squared {1,9,25,9,16}
+	 * */
+	public Object[] streamMap() {
+		return Arrays.asList(new Integer[] { 1, 3, 5, 3, 4 }).stream().map(value -> {
+			return (Integer) value * value;
+		}).toArray();
+	}	
 
 	/**
 	 * Returns a sub-array of an array depending on the limit passed
