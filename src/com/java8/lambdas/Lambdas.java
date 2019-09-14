@@ -85,7 +85,7 @@ public class Lambdas {
 		}).collect(Collectors.toList());
 	}
 	
-	// Lambda predicate example; this function method could replace the predicate in getAllMamals
+	// Lambda predicate example; this function method could replace the predicate in getAllMammals
 	private Predicate<Animal> isMamal() {
 		return p -> p.getAnimalClass().equalsIgnoreCase("mammalia");
 	}

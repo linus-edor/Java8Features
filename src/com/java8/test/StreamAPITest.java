@@ -139,6 +139,9 @@ public class StreamAPITest {
 
 		// Integer
 		assertEquals(89, main.streamMaxInt());
+		
+		//Boxed stream - int
+		assertEquals(19, main.boxedStreamMax(new int[] { 1, 2, 3, 2, 4, 19 }));
 	}
 
 	@Test

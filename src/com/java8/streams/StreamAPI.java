@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class StreamAPI {
@@ -235,6 +236,13 @@ public class StreamAPI {
 		return result.toString().substring(2).toLowerCase();
 	}
 	
+	/**
+	 * Use boxed stream to process an int array for max value
+	 */
+	public int boxedStreamMax(int[] ints) {
+		Optional<Integer> max = IntStream.of(ints).boxed().max(Integer::compareTo);
+		return max.get().intValue();
+	}
 	
 	//Codility - email addresses formatting
 	public String addressesJ8(String S, String C) {
