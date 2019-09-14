@@ -36,13 +36,6 @@ public class StreamAPI {
 		
 		System.out.println("Conncatenated and reduced::: " + streamConcat());
 		
-			Callable[] animals = new Callable[]{()->{return "Lion";}, ()->"Crocodile"};
-			try {
-				System.out.println("Animal called::: "+animals[0].call());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	}
 	
 	
