@@ -11,9 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.concurrent.Callable;
+import java.util.function.LongSupplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class StreamAPI {
@@ -25,7 +28,7 @@ public class StreamAPI {
 		Stream<String> stream = stringList.stream();
 		stream.peek((value) -> {
 			System.out.println("value:::" + value);
-		});
+		}); 
 		
 		//flatMap
 		Arrays.stream(streamFlatMap()).forEach((value) -> System.out.println(value));
@@ -36,6 +39,8 @@ public class StreamAPI {
 		//Concatenated 
 		
 		System.out.println("Conncatenated and reduced::: " + streamConcat());
+		
+		persistence(39);
 		
 	}
 	
@@ -244,6 +249,19 @@ public class StreamAPI {
 		return max.get().intValue();
 	}
 	
+	//You can't user a simple collector on an unboxed stream
+	public long[] boxedStreamLong(long[] longs) {
+		return LongStream.of(longs).collect(null, null, null);
+	}
+	
+	//Illustrates a predicate as a lambda expression
+	public long[] filterExample(long[] longs) {
+		return LongStream.of(longs).filter((long l) -> {
+			return l < 10;
+		}).toArray();
+	}
+
+	
 	//Codility - email addresses formatting
 	public String addressesJ8(String S, String C) {
 		String[] addrTokens = S.split("; ");// holds the various raw addresses
@@ -274,5 +292,30 @@ public class StreamAPI {
                                       .mapToObj(String::valueOf)
                                       .collect(Collectors.joining("")));
 	}
+	
+	
+	/**
+	 * The multiplicative persistence problem.
+	 * For a given number num, calculate the product of it's digits and repeat the same process 
+	 * for the resultant product until the result is a single digit. The multiplicative persistence of the
+	 * number num is the number of times this process has to be repeated.
+	 */
+	public static int persistence(long num) {
+		int a;
+		int b = 1; // holds the product in each iteration
+		int x = 0; // repeat counter
+		while (num > 9) {
+			while (num > 0) {
+				a = (int) (num % 10);
+				b *=   a;
+			}
+			num = b; // num is now the new product
+			b = 1; // reset product
+			x++;
+		}
+		return x;
+	}
+//	6773272
+//	6*7*7*3*2*7*2 = 37044
 
 }

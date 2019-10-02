@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.FilterFactory.FilterNotCreatedException;
 
 import com.java8.streams.StreamAPI;
 
@@ -140,8 +141,10 @@ public class StreamAPITest {
 		// Integer
 		assertEquals(89, main.streamMaxInt());
 		
-		//Boxed stream - int
-		assertEquals(19, main.boxedStreamMax(new int[] { 1, 2, 3, 2, 4, 19 }));
+		//Boxed stream
+		assertEquals(19, main.boxedStreamMax(new int[] { 1, 2, 3, 2, 4, 19 }));	
+		
+		assertArrayEquals(new long[]{ 1, 2, 3, 4, 5}, main.filterExample(new long[]{ 1, 2, 3, 4, 5, 19}));
 	}
 
 	@Test
@@ -186,6 +189,12 @@ public class StreamAPITest {
 		assertEquals(4104, main.squareDigits(2102));
 		assertNotEquals(4204, main.squareDigits(2102));
 		assertEquals(2549814, main.squareDigits(5792));
+	}
+	
+	@Test
+	public void testMultiplicativePersistence(){
+		assertEquals(3, main.persistence(39));
+		assertEquals(4,main.persistence(6773272));
 	}
 
 }
