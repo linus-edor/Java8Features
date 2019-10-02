@@ -194,7 +194,9 @@ public class StreamAPITest {
 	@Test
 	public void testMultiplicativePersistence(){
 		assertEquals(3, main.persistence(39));
+		assertEquals(1, main.persistence(390));
 		assertEquals(4,main.persistence(6773272));
+		assertEquals(1,main.persistence(67732720));
 	}
 
 }

@@ -307,6 +307,7 @@ public class StreamAPI {
 		while (num > 9) {
 			while (num > 0) {
 				a = (int) (num % 10);
+				num = num/10;
 				b *=   a;
 			}
 			num = b; // num is now the new product
@@ -315,7 +316,5 @@ public class StreamAPI {
 		}
 		return x;
 	}
-//	6773272
-//	6*7*7*3*2*7*2 = 37044
 
 }
